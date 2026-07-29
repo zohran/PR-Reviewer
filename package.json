@@ -1,5 +1,5 @@
 {
-  "name": "my-pr-reviewer",
+  "name": "pr-reviewer",
   "version": "1.0.0",
   "description": "GitHub Action that reviews PRs with lint, tests, and LLM feedback",
   "main": "dist/index.js",

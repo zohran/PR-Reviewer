@@ -1,4 +1,4 @@
-# Runs the PR Reviewer action against this repo's pull requests.
+# Runs the PR Reviewer action against this repo's own pull requests (E2E).
 name: PR Review
 
 on:
@@ -20,8 +20,8 @@ jobs:
           fetch-depth: 0
 
       - name: Run PR Reviewer
-        # Action package lives in the my-pr-reviewer/ subdirectory
-        uses: ./my-pr-reviewer
+        uses: ./
+        # After publishing: uses: your-org/PR-Reviewer@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}

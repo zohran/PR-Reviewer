@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Pre-commit / local / CI check: rebuild dist/ and fail if the working tree differs.
-//
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
