@@ -20,7 +20,9 @@ Do not commit the key to the repo or to `action.yml`.
 
 ## Usage
 
-Copy [`.github/workflows/pr-review.yml`](.github/workflows/pr-review.yml) into a consuming repo (and point `uses:` at this action’s published ref), or start from:
+In **this** repository the live workflow is [`.github/workflows/pr-review.yml`](../.github/workflows/pr-review.yml) and uses `./my-pr-reviewer`.
+
+When consuming from another repo (or after publishing), use:
 
 ```yaml
 name: PR Review
@@ -41,12 +43,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: your-org/my-pr-reviewer@v1
+      - uses: your-org/PR-Reviewer/my-pr-reviewer@main
+        # Or if this package is the repo root: uses: your-org/my-pr-reviewer@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
+See also the in-package example at [`.github/workflows/pr-review.yml`](.github/workflows/pr-review.yml) (`uses: ./`).
 ## Inputs
 
 | Input | Required | Default | Description |

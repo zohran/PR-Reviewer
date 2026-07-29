@@ -1,7 +1,5 @@
-# Example consumer workflow — copy into another repo, or use when this
-# package is the repository root. In *this* monorepo the live workflow is
-# /.github/workflows/pr-review.yml (uses: ./my-pr-reviewer).
-name: PR Review (example)
+# Runs the PR Reviewer action against this repo's pull requests.
+name: PR Review
 
 on:
   pull_request:
@@ -18,11 +16,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          # Full history so commit messages / diffs resolve correctly
           fetch-depth: 0
 
       - name: Run PR Reviewer
-        uses: ./
-        # Or, after publishing: uses: your-org/my-pr-reviewer@v1
+        # Action package lives in the my-pr-reviewer/ subdirectory
+        uses: ./my-pr-reviewer
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Optional overrides:
+          # fail-on-lint-errors: true
+          # fail-on-test-failure: true
+          # custom-test-command: 'make test'
