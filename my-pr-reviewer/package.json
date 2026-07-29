@@ -1,0 +1,37 @@
+{
+  "name": "my-pr-reviewer",
+  "version": "1.0.0",
+  "description": "GitHub Action that reviews PRs with lint, tests, and LLM feedback",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/index.ts -o dist",
+    "package": "npm run build",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "lint": "tsc --noEmit",
+    "check:dist": "bash scripts/check-dist.sh",
+    "prepublishOnly": "npm run lint && npm test && npm run check:dist"
+  },
+  "keywords": [
+    "github-actions",
+    "pull-request",
+    "code-review"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^3.0.1",
+    "@actions/exec": "^3.0.0",
+    "@actions/github": "^9.1.1",
+    "@octokit/rest": "^22.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^26.1.2",
+    "@vercel/ncc": "^0.44.1",
+    "jest": "^30.4.2",
+    "nock": "^14.0.16",
+    "ts-jest": "^29.4.12",
+    "typescript": "^5.8.3"
+  }
+}

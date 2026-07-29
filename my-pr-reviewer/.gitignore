@@ -1,0 +1,17 @@
+# Dependencies & build junk
+node_modules/
+lib/
+*.tsbuildinfo
+
+# OS / editor
+.DS_Store
+*.log
+
+# Secrets / local env (never commit)
+.env
+.env.*
+.secrets
+
+# IMPORTANT: do NOT ignore dist/
+# GitHub Actions runs the committed dist/index.js directly (see action.yml).
+# Always rebuild with `npm run build` and commit dist/ when src/ changes.

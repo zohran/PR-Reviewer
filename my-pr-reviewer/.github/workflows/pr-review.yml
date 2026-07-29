@@ -1,0 +1,32 @@
+# Example consumer workflow — how a repo would use this action on pull requests.
+name: PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history so commit messages / diffs resolve correctly
+          fetch-depth: 0
+
+      - name: Run PR Reviewer
+        uses: ./
+        # After publishing to the Marketplace / a public repo:
+        # uses: your-org/my-pr-reviewer@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Optional overrides:
+          # fail-on-lint-errors: true
+          # fail-on-test-failure: true
+          # custom-test-command: 'make test'

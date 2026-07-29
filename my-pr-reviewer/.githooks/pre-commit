@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Optional local git hook: ensure dist/ was rebuilt before committing src/ changes.
+# Enable with: git config core.hooksPath .githooks
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+
+# Only enforce when TypeScript sources or the bundle itself are staged
+if ! git diff --cached --name-only | grep -Eq '^(src/|dist/)'; then
+  exit 0
+fi
+
+"$ROOT/scripts/check-dist.sh"
+
+# If build rewrote dist/, make sure the new artifacts are staged
+if git diff --name-only -- dist/ | grep -q .; then
+  echo "ERROR: dist/ changed during the hook; stage dist/ and re-commit."
+  exit 1
+fi
