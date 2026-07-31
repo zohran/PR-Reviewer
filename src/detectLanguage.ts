@@ -1,33 +1,36 @@
-import type { ChangedFile } from './types';
+import type { ChangedFile } from "./types";
 
 /** Languages produced by extension majority voting (plus unknown). */
+/** Languages produced by extension majority voting (plus unknown). */
 export type ProjectLanguage =
-  | 'python'
-  | 'node'
-  | 'go'
-  | 'java'
-  | 'ruby'
-  | 'rust'
-  | 'csharp'
-  | 'unknown';
+  | "python"
+  | "node"
+  | "go"
+  | "java"
+  | "ruby"
+  | "rust"
+  | "csharp"
+  | "unknown";
 
-const EXTENSION_TO_LANGUAGE: Readonly<Record<string, Exclude<ProjectLanguage, 'unknown'>>> = {
-  '.py': 'python',
-  '.js': 'node',
-  '.jsx': 'node',
-  '.ts': 'node',
-  '.tsx': 'node',
-  '.go': 'go',
-  '.java': 'java',
-  '.rb': 'ruby',
-  '.rs': 'rust',
-  '.cs': 'csharp',
+const EXTENSION_TO_LANGUAGE: Readonly<
+  Record<string, Exclude<ProjectLanguage, "unknown">>
+> = {
+  ".py": "python",
+  ".js": "node",
+  ".jsx": "node",
+  ".ts": "node",
+  ".tsx": "node",
+  ".go": "go",
+  ".java": "java",
+  ".rb": "ruby",
+  ".rs": "rust",
+  ".cs": "csharp",
 };
 
 /** Matches `Language: python` / `lang: go` with flexible whitespace (case-insensitive). */
 const LANGUAGE_TAG_RE = /\blang(?:uage)?\s*:\s*([A-Za-z0-9_+#]+)/i;
 
-const IGNORED_DIR_SEGMENTS = new Set(['node_modules', 'dist', 'vendor']);
+const IGNORED_DIR_SEGMENTS = new Set(["node_modules", "dist", "vendor"]);
 
 /**
  * Detects the primary language for a PR.
@@ -41,8 +44,8 @@ const IGNORED_DIR_SEGMENTS = new Set(['node_modules', 'dist', 'vendor']);
  * @returns Detected language string (lowercase), or `'unknown'`
  */
 export function detectLanguage(
-  changedFiles: ReadonlyArray<Pick<ChangedFile, 'filename'>>,
-  prDescription: string | null | undefined
+  changedFiles: ReadonlyArray<Pick<ChangedFile, "filename">>,
+  prDescription: string | null | undefined,
 ): string {
   const tagged = extractLanguageTag(prDescription);
   if (tagged !== undefined) {
@@ -57,7 +60,7 @@ export function detectLanguage(
  * Returns the value lowercased, or `undefined` when no tag is present.
  */
 export function extractLanguageTag(
-  prDescription: string | null | undefined
+  prDescription: string | null | undefined,
 ): string | undefined {
   if (!prDescription) {
     return undefined;
@@ -72,9 +75,9 @@ export function extractLanguageTag(
 }
 
 function voteByExtension(
-  changedFiles: ReadonlyArray<Pick<ChangedFile, 'filename'>>
+  changedFiles: ReadonlyArray<Pick<ChangedFile, "filename">>,
 ): ProjectLanguage {
-  const counts = new Map<Exclude<ProjectLanguage, 'unknown'>, number>();
+  const counts = new Map<Exclude<ProjectLanguage, "unknown">, number>();
 
   for (const file of changedFiles) {
     if (shouldIgnorePath(file.filename)) {
@@ -91,10 +94,10 @@ function voteByExtension(
   }
 
   if (counts.size === 0) {
-    return 'unknown';
+    return "unknown";
   }
 
-  let bestLanguage: Exclude<ProjectLanguage, 'unknown'> | undefined;
+  let bestLanguage: Exclude<ProjectLanguage, "unknown"> | undefined;
   let bestCount = 0;
   let tied = false;
 
@@ -109,7 +112,7 @@ function voteByExtension(
   }
 
   if (tied || bestLanguage === undefined) {
-    return 'unknown';
+    return "unknown";
   }
 
   return bestLanguage;
@@ -117,8 +120,8 @@ function voteByExtension(
 
 /** True for vendor/generated paths and lockfiles that should not vote. */
 export function shouldIgnorePath(filename: string): boolean {
-  const normalized = filename.replace(/\\/g, '/');
-  const segments = normalized.split('/');
+  const normalized = filename.replace(/\\/g, "/");
+  const segments = normalized.split("/");
 
   for (const segment of segments.slice(0, -1)) {
     if (IGNORED_DIR_SEGMENTS.has(segment)) {
@@ -126,8 +129,8 @@ export function shouldIgnorePath(filename: string): boolean {
     }
   }
 
-  const basename = segments[segments.length - 1] ?? '';
-  if (basename.endsWith('.lock')) {
+  const basename = segments[segments.length - 1] ?? "";
+  if (basename.endsWith(".lock")) {
     return true;
   }
 
@@ -135,10 +138,10 @@ export function shouldIgnorePath(filename: string): boolean {
 }
 
 function getExtension(filename: string): string {
-  const basename = filename.replace(/\\/g, '/').split('/').pop() ?? '';
-  const dot = basename.lastIndexOf('.');
+  const basename = filename.replace(/\\/g, "/").split("/").pop() ?? "";
+  const dot = basename.lastIndexOf(".");
   if (dot <= 0) {
-    return '';
+    return "";
   }
   return basename.slice(dot).toLowerCase();
 }

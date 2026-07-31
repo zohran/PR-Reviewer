@@ -1,5 +1,5 @@
 {
-  "name": "my-pr-reviewer",
+  "name": "pr-reviewer",
   "version": "1.0.0",
   "description": "GitHub Action that reviews PRs with lint, tests, and LLM feedback",
   "main": "dist/index.js",
@@ -20,9 +20,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@actions/core": "^3.0.1",
-    "@actions/exec": "^3.0.0",
-    "@actions/github": "^9.1.1",
+    "@actions/core": "^1.11.1",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^6.0.1",
     "@octokit/rest": "^22.0.1"
   },
   "devDependencies": {
